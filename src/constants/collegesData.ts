@@ -1,4 +1,32 @@
-[
+export interface College {
+  id: number;
+  name: string;
+  fees: number;
+  rating: number;
+  reviews: {
+    count: number;
+    tags: string[];
+  };
+  placement: {
+    avg_package: number;
+    highest_package: number;
+  };
+  featured: boolean;
+  cd_rank: number;
+  img: string;
+  branchwise_cutoff?: {
+    branch: string;
+    branch_cutoff: number;
+  };
+  address?: string;
+  ranking?: {
+    rank: number;
+    total_ranks: number;
+    rank_year: number;
+  };
+}
+
+export const collegesData: College[] = [
   {
     "id": 1,
     "name": "IIT Madras",

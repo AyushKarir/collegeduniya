@@ -1,17 +1,28 @@
 'use client'
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import collegesData from '../constants/collegesData.json';
+import { College, collegesData } from '../constants/collegesData';
+
 import TableData from '../components/TableData'
 
-const CollegeDashboard = () => {
-  const [colleges, setColleges] = useState(collegesData.slice(0, 10));
-  const [sortConfig, setSortConfig] = useState(null);
-  const [search, setSearch] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
 
-  const handleSort = (key, order = 'asc') => {
+
+interface SortConfig {
+  key: keyof College;
+  order: 'asc' | 'desc';
+}
+
+const CollegeDashboard = () => {
+  const [colleges, setColleges] = useState<College[]>(collegesData.slice(0, 10) as College[]);
+  const [sortConfig, setSortConfig] = useState<SortConfig | null>(null);
+  const [search, setSearch] = useState<string>('');
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  const handleSort = (key: keyof College, order: 'asc' | 'desc' = 'asc') => {
     const sortedData = [...colleges].sort((a, b) => {
-      const diff = a[key] - b[key];
+      const valueA = a[key] ?? 0; // Use a default value for undefined or null
+      const valueB = b[key] ?? 0;
+
+      const diff = valueA > valueB ? 1 : valueA < valueB ? -1 : 0;
       return order === 'asc' ? diff : -diff;
     });
     setColleges(sortedData);
@@ -66,7 +77,8 @@ const CollegeDashboard = () => {
         <select
           onChange={(e) => {
             const [key, order] = e.target.value.split('-');
-            handleSort(key, order);
+            const sortedOrder = (order as "asc" | "desc") || undefined;
+            handleSort(key as keyof College, sortedOrder);
           }}
           className="border px-4 py-2"
         >

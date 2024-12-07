@@ -1,8 +1,14 @@
 import React from 'react'
+import { College } from "../constants/collegesData"
 
-const TableData = ({ filteredColleges }) => {
+type TableDataProps = {
+    filteredColleges: College[];
+};
 
-    const formatFees = (fees) => {
+
+const TableData = ({ filteredColleges }: TableDataProps) => {
+
+    const formatFees = (fees: number) => {
         // Convert the fee to a string and use a regex to format the number with commas
         return new Intl.NumberFormat('en-IN').format(fees);
     };
